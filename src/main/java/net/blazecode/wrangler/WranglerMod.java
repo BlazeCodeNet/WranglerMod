@@ -1,4 +1,4 @@
-package net.blazecode.example;
+package net.blazecode.wrangler;
 
 import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.ConfigData;
@@ -10,10 +10,10 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
 @Environment( EnvType.SERVER )
-public class ExampleMod implements DedicatedServerModInitializer
+public class WranglerMod implements DedicatedServerModInitializer
 {
 
-	public static final String MODID = "example";
+	public static final String MODID = "wrangler";
 
 	@Override
 	public void onInitializeServer( )
@@ -37,5 +37,21 @@ public class ExampleMod implements DedicatedServerModInitializer
 	{
 		@Comment("Toggles the entire mod on or off")
 		boolean enabled = true;
+
+		@Comment("Chance of a creeper to be a 'fake' between 0-100")
+		int fake_chance = 66;
+
+		@Comment("Maximum Y value that creepers can explode. Setting to 0 disables this feature")
+		int max_y_explosion = 50;
+
+		public boolean getEnabled()
+		{
+			return enabled;
+		}
+		public int getFakeChance()
+		{
+			return fake_chance;
+		}
+		public int getMaxYExplosion() { return max_y_explosion; }
 	}
 }

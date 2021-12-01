@@ -3,7 +3,7 @@
   "id": "example",
   "version": "${version}",
 
-  "name": "Example",
+  "name": "Wrangler",
   "description": "A server-side mod template",
   "authors": [
     "BlazeCode",
@@ -15,16 +15,16 @@
   },
 
   "license": "CC0-1.0",
-  "icon": "assets/modid/icon.png",
+  "icon": "assets/wrangler/icon.png",
 
   "environment": "server",
   "entrypoints": {
     "server": [
-      "net.blazecode.example.ExampleMod"
+      "net.blazecode.wrangler.WranglerMod"
     ]
   },
   "mixins": [
-    "modid.mixins.json"
+    "wrangler.mixins.json"
   ],
 
   "depends": {
