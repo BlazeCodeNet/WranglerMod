@@ -18,18 +18,22 @@ public abstract class CreeperEntityMixin
     {
         if( !instance.world.isClient )
         {
-            int fakeChance = WranglerMod.getConfig().getFakeChance();
-            int maxY = WranglerMod.getConfig( ).getMaxYExplosion( );
-
-            boolean isFake = (instance.world.random.nextInt( 100 ) <= fakeChance);
+            int maxY = WranglerMod.getConfig( ).getYThreshold( );
             boolean isBelowMaxY = (instance.getBlockY() <= maxY);
 
-            if(!isFake && isBelowMaxY)
+            int fakeChance = ( ( isBelowMaxY ? WranglerMod.getConfig( ).getFakeChanceBelow( ) : WranglerMod.getConfig( ).getFakeChanceAbove( ) ) );
+            
+            float multiplier = ( isBelowMaxY ? WranglerMod.getConfig( ).getMultiplierBelow( ) : WranglerMod.getConfig( ).getMultiplierAbove() );
+            
+            boolean triggered = (instance.world.random.nextInt( 101 ) < fakeChance);
+            boolean blockDamage = (isBelowMaxY ? WranglerMod.getConfig().getDamageBlocksBelow() : WranglerMod.getConfig( ).getDamageBlocksAbove( ) );
+            
+            if(triggered)
             {
                 instance.playSound( SoundEvents.ENTITY_LIGHTNING_BOLT_IMPACT, 1.33f, 0.85f );
-                Explosion.DestructionType destructionType = instance.world.getGameRules().getBoolean( GameRules.DO_MOB_GRIEFING) ? Explosion.DestructionType.DESTROY : Explosion.DestructionType.NONE;
+                Explosion.DestructionType destructionType = (instance.world.getGameRules().getBoolean( GameRules.DO_MOB_GRIEFING) && blockDamage) ? Explosion.DestructionType.DESTROY : Explosion.DestructionType.NONE;
                 float f = instance.shouldRenderOverlay() ? 2.0F : 1.0F;
-                instance.world.createExplosion(instance, instance.getX(), instance.getY(), instance.getZ(), 4.5f * f, destructionType);
+                instance.world.createExplosion(instance, instance.getX(), instance.getY(), instance.getZ(), 3.0f * f * multiplier, destructionType);
             }
             else
             {
